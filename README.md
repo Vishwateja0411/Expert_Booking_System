@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Real-Time Expert Session Booking System
 
 Full-stack booking app built with React, Node.js, Express, MongoDB, and Socket.io.
@@ -55,3 +56,6 @@ The backend seeds sample experts automatically when the experts collection is em
 - `POST /api/bookings`
 - `GET /api/bookings?email=`
 - `PATCH /api/bookings/:id/status`
+=======
+# Expert_Booking_System
+>>>>>>> 2dae8f4043cfc2f6eb5d2a8b6c3dfb5423181a67

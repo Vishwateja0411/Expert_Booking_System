@@ -1,15 +1,18 @@
 {
-  "name": "expert-session-booking-system",
-  "version": "1.0.0",
-  "private": true,
-  "description": "Real-time expert session booking system with React, Express, MongoDB, and Socket.io.",
-  "scripts": {
-    "install:all": "npm.cmd install --prefix server && npm.cmd install --prefix client",
-    "dev": "concurrently \"npm.cmd run dev --prefix server\" \"npm.cmd run dev --prefix client\"",
-    "start": "npm.cmd start --prefix server",
-    "build": "npm run build --prefix client"
-  },
-  "devDependencies": {
-    "concurrently": "^9.1.2"
-  }
+    "name":  "expert-session-booking-system",
+    "version":  "1.0.0",
+    "private":  true,
+    "description":  "Real-time expert session booking system with React, Express, MongoDB, and Socket.io.",
+    "scripts":  {
+                    "dev":  "concurrently \"npm run dev --workspace server\" \"npm run dev --workspace client\"",
+                    "start":  "npm run start --workspace server",
+                    "build":  "npm run build --workspace client"
+                },
+    "devDependencies":  {
+                            "concurrently":  "^9.1.2"
+                        },
+    "workspaces":  [
+                       "client",
+                       "server"
+                   ]
 }

@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { Booking } from '../models/Booking.js';
 import { Expert } from '../models/Expert.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
+import { isBookableSlot } from '../utils/slotAvailability.js';
 
 const phoneRegex = /^[0-9+\-\s()]{7,20}$/;
 
@@ -28,10 +29,7 @@ export const createBooking = asyncHandler(async (req, res) => {
     return res.status(404).json({ message: 'Expert not found.' });
   }
 
-  const slotGroup = expert.availableSlots.find((group) => group.date === payload.date);
-  const slotExists = slotGroup?.times.includes(payload.timeSlot);
-
-  if (!slotExists) {
+  if (!isBookableSlot(expert, payload.date, payload.timeSlot)) {
     return res.status(400).json({
       message: 'Selected slot is not available for this expert.'
     });

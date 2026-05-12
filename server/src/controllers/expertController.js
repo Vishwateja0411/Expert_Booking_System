@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { Expert } from '../models/Expert.js';
 import { Booking } from '../models/Booking.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
+import { buildRollingAvailableSlots } from '../utils/slotAvailability.js';
 
 const listQuerySchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
@@ -60,26 +61,7 @@ export const getExpertById = asyncHandler(async (req, res) => {
   const bookings = await Booking.find({ expert: id }).select('date timeSlot').lean();
   const bookedSet = new Set(bookings.map((booking) => `${booking.date}|${booking.timeSlot}`));
 
-  const today = new Date();
-  const todayKey = [
-    today.getFullYear(),
-    String(today.getMonth() + 1).padStart(2, '0'),
-    String(today.getDate()).padStart(2, '0')
-  ].join('-');
-
-  const availableSlots = expert.availableSlots
-    .slice()
-    .sort((firstGroup, secondGroup) => firstGroup.date.localeCompare(secondGroup.date))
-    .filter((group) => group.date >= todayKey)
-    .map((group) => ({
-      date: group.date,
-      slots: group.times.map((time) => ({
-        time,
-        booked: bookedSet.has(`${group.date}|${time}`)
-      }))
-    }))
-    .filter((group) => group.slots.some((slot) => !slot.booked))
-    .slice(0, 3);
+  const availableSlots = buildRollingAvailableSlots(expert, bookedSet, 3);
 
   res.json({
     data: {

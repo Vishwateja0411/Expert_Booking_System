@@ -3,6 +3,7 @@ import { CalendarDays, CheckCircle2, Clock, Filter, Mail, Search, Star, UserRoun
 import { io } from 'socket.io-client';
 import { api, SOCKET_URL } from './api.js';
 
+
 const initialBooking = {
   customerName: '',
   email: '',
